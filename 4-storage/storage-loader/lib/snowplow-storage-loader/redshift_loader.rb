@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2016 Snowplow Analytics Ltd. All rights reserved.
+# Copyright (c) 2012-2017 Snowplow Analytics Ltd. All rights reserved.
 #
 # This program is licensed to you under the Apache License Version 2.0,
 # and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -52,7 +52,6 @@ module Snowplow
 
         # First let's get our statements for shredding (if any)
         shredded_statements = get_shredded_statements(config, target, s3)
-
         # Build our main transaction, consisting of COPY and COPY FROM JSON
         # statements, and potentially also a set of table ANALYZE statements.
 
@@ -62,7 +61,7 @@ module Snowplow
           :shredded
         end
 
-        schema = target[:schema] || "atomic"
+        schema = target[:schema]
         events_table = schema + ".events"
 
         copy_statements = if atomic_events_location == :shredded
@@ -75,9 +74,9 @@ module Snowplow
           end
           # Of the form "run=xxx/atomic-events"
           altered_enriched_subdirectory = ALTERED_ENRICHED_PATTERN.match(altered_enriched_filepath.key)[1]
-          [build_copy_from_tsv_statement(config, config[:aws][:s3][:buckets][:shredded][:good] + altered_enriched_subdirectory, events_table, target[:maxerror])]
+          [build_copy_from_tsv_statement(config, config[:aws][:s3][:buckets][:shredded][:good] + altered_enriched_subdirectory, events_table, target[:maxError].to_i)]
         else
-          [build_copy_from_tsv_statement(config, config[:aws][:s3][:buckets][:enriched][:good], events_table, target[:maxerror])]
+          [build_copy_from_tsv_statement(config, config[:aws][:s3][:buckets][:enriched][:good], events_table, target[:maxError].to_i)]
         end + shredded_statements.map(&:copy)
 
         credentials = [config[:aws][:access_key_id], config[:aws][:secret_access_key]]
@@ -134,7 +133,7 @@ module Snowplow
         if config[:skip].include?('shred') # No shredded types to load
           []
         else
-          schema = target[:schema] || "atomic"
+          schema = target[:schema]
 
           ShreddedType.discover_shredded_types(s3, config[:aws][:s3][:buckets][:shredded][:good], schema).map { |st|
 
@@ -144,7 +143,7 @@ module Snowplow
             end
 
             SqlStatements.new(
-              build_copy_from_json_statement(config, st.s3_objectpath, jsonpaths_file, st.table, target[:maxerror]),
+              build_copy_from_json_statement(config, st.s3_objectpath, jsonpaths_file, st.table, target[:maxError].to_i),
               build_analyze_statement(st.table),
               build_vacuum_statement(st.table)
             )
