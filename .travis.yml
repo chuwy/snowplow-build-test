@@ -21,7 +21,6 @@ services:
 - postgresql
 before_deploy:
 - pip install --user release-manager==0.2.0
-- rvm install --default jruby
 deploy:
 - provider: script
   script: ./.travis/deploy_kinesis.sh $TRAVIS_TAG

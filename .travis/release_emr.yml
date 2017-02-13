@@ -19,8 +19,8 @@ packages:
     version  : <%= CMD['cat VERSION | xargs echo -n'] %>
     build_version : <%= ENV['TRAVIS_BUILD_RELEASE_TAG'] %>
     build_commands:
-      - cd 3-enrich/emr-etl-runner  && rspec && ./build.sh
-      - cd 4-storage/storage-loader && rspec && ./build.sh
+      - cd 3-enrich/emr-etl-runner  && ./build.sh
+      - cd 4-storage/storage-loader && ./build.sh
 
     # Required: Artifact
     artifacts:
