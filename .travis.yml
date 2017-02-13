@@ -11,7 +11,6 @@ before_script:
 script:
 - python integration-tests/api-lookup-test.py &
 - cd 3-enrich/scala-common-enrich
-- sbt test
 - cd ../..
 before_install:
 - pip install --user awscli
