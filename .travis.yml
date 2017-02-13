@@ -51,6 +51,12 @@ deploy:
     tags: true
     condition: '"$(.travis/is_hadoop_event_recovery_release_tag.sh $TRAVIS_TAG)" ==
       "" && $? == 0'
+- provider: script
+  script: ./.travis/deploy_emr.sh $TRAVIS_TAG
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: '"$(.travis/is_emr_release_tag.sh $TRAVIS_TAG)" == "" && $? == 0'
 env:
   global:
   - secure: r2vukzbSOA7nPUC6g+JiJuRsZz3hldWgSPNxQ+VpjKd0QHve8ebKs/sB5NOHQjcBkutHkECIs7du3nvfesanA8EGEHUUAkfCC9TsoEJUK4g9QpU6MB1hmENdQKC4cHP3ZHdV6piUzy5p6JxrxMHiFAsKGJYoSG9hKAk0rholnVNXoouI1sxLfwTgzktN3YHx+n/cR0oO1rA5zcqsbl48dzGhtW8ZP+sv3ytg6VmwOPS9flA55+CV9QYuxm1PpuhcA1MpWTOx7rjd0rkLBbRbLlE0pU/jzChQFbE29BsyKvYSYmnj0CUJhUzFX7O7RcQevm1AgOSe0o1U1HAHmTxSuMp+dwR0OlK3Vc8vYe/ikXdQRoVgw9X7gQAD9DL4/DM5+hwFPS1boqE5Kfr9KapP9p2ehjRX1+BouJ+VPlbIR+jBK2VK4UGu9svqzCSofHiCMSrzNdfWgRSyYhrHb85Dj9jC/eKeZ5fXNI0+wDvQp1uTgFYA3ORMLumjjpRSw7clWvjOv+8Ic9Wtc46monQ9F2oCKZ67IYxnenruKbew17OWkDC94+z1cCzECIrTL/cCq9mqGXwkrWHHFcY1Dy1ETkclUGt7mus5FBUn561IWMsBB3JpTv7OV65MFkDv5fGOQlpBloYSAUzEP1MVSVC0WdojSSOojfwkxaEfBV4TplU=
