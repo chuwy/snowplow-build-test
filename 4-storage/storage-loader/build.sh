@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (c) 2015 Snowplow Analytics Ltd. All rights reserved.
+# Copyright (c) 2015-2017 Snowplow Analytics Ltd. All rights reserved.
 #
 # This program is licensed to you under the Apache License Version 2.0,
 # and you may not use this file except in compliance with the Apache License Version 2.0.
@@ -15,8 +15,11 @@
 # Copyright:: Copyright (c) 2015 Snowplow Analytics Ltd
 # License::   Apache License Version 2.0
 
+set -e
 rvm install jruby-9.1.6.0
 bash -l -c 'rvm use jruby-9.1.6.0'
 gem install bundler
 bundle install
+echo 'Running RSpec'
+rspec
 rake
