@@ -17,7 +17,7 @@
 
 set -e
 rvm install jruby-9.1.6.0
-bash -l -c 'rvm use jruby-9.1.6.0'
+bash -l -c 'rvm use --default jruby-9.1.6.0'
 gem install bundler
 bundle install
 echo 'Running RSpec'
