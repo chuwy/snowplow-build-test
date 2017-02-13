@@ -13,7 +13,6 @@ script:
 - cd 3-enrich/scala-common-enrich
 - sbt test
 - cd ../..
-
 before_install:
 - pip install --user awscli
 - export PATH=$PATH:$HOME/.local/bin
@@ -22,29 +21,37 @@ addons:
 services:
 - postgresql
 before_deploy:
-  - pip install --user release-manager==0.2.0
+- pip install --user release-manager==0.2.0
 deploy:
-  - provider: script
-    script: ./.travis/deploy_kinesis.sh $TRAVIS_TAG
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: '"$(.travis/is_kinesis_release_tag.sh $TRAVIS_TAG)" == "" && $? == 0'
-  - provider: script
-    script: ./.travis/deploy_hadoop_enrich.sh $TRAVIS_TAG
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: '"$(.travis/is_hadoop_enrich_release_tag.sh $TRAVIS_TAG)" == "" && $? == 0'
-  - provider: script
-    script: ./.travis/deploy_hadoop_shred.sh $TRAVIS_TAG
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: '"$(.travis/is_hadoop_shred_release_tag.sh $TRAVIS_TAG)" == "" && $? == 0'
-  - provider: script
-    script: ./.travis/deploy_hadoop_enrich.sh $TRAVIS_TAG
-    skip_cleanup: true
-    on:
-      tags: true
-      condition: '"$(.travis/is_hadoop_event_recovery_release_tag.sh $TRAVIS_TAG)" == "" && $? == 0'
+- provider: script
+  script: ./.travis/deploy_kinesis.sh $TRAVIS_TAG
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: '"$(.travis/is_kinesis_release_tag.sh $TRAVIS_TAG)" == "" && $? ==
+      0'
+- provider: script
+  script: ./.travis/deploy_hadoop_enrich.sh $TRAVIS_TAG
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: '"$(.travis/is_hadoop_enrich_release_tag.sh $TRAVIS_TAG)" == "" &&
+      $? == 0'
+- provider: script
+  script: ./.travis/deploy_hadoop_shred.sh $TRAVIS_TAG
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: '"$(.travis/is_hadoop_shred_release_tag.sh $TRAVIS_TAG)" == "" && $?
+      == 0'
+- provider: script
+  script: ./.travis/deploy_hadoop_enrich.sh $TRAVIS_TAG
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: '"$(.travis/is_hadoop_event_recovery_release_tag.sh $TRAVIS_TAG)" ==
+      "" && $? == 0'
+env:
+  global:
+  - secure: r2vukzbSOA7nPUC6g+JiJuRsZz3hldWgSPNxQ+VpjKd0QHve8ebKs/sB5NOHQjcBkutHkECIs7du3nvfesanA8EGEHUUAkfCC9TsoEJUK4g9QpU6MB1hmENdQKC4cHP3ZHdV6piUzy5p6JxrxMHiFAsKGJYoSG9hKAk0rholnVNXoouI1sxLfwTgzktN3YHx+n/cR0oO1rA5zcqsbl48dzGhtW8ZP+sv3ytg6VmwOPS9flA55+CV9QYuxm1PpuhcA1MpWTOx7rjd0rkLBbRbLlE0pU/jzChQFbE29BsyKvYSYmnj0CUJhUzFX7O7RcQevm1AgOSe0o1U1HAHmTxSuMp+dwR0OlK3Vc8vYe/ikXdQRoVgw9X7gQAD9DL4/DM5+hwFPS1boqE5Kfr9KapP9p2ehjRX1+BouJ+VPlbIR+jBK2VK4UGu9svqzCSofHiCMSrzNdfWgRSyYhrHb85Dj9jC/eKeZ5fXNI0+wDvQp1uTgFYA3ORMLumjjpRSw7clWvjOv+8Ic9Wtc46monQ9F2oCKZ67IYxnenruKbew17OWkDC94+z1cCzECIrTL/cCq9mqGXwkrWHHFcY1Dy1ETkclUGt7mus5FBUn561IWMsBB3JpTv7OV65MFkDv5fGOQlpBloYSAUzEP1MVSVC0WdojSSOojfwkxaEfBV4TplU=
+  - secure: S1ihXgR6R6/Qjqt8cRqAoQCPF5w0OYngDIY0PubA5nEWZH1HEUMnapJ8J8xMOxWrHJeytwGWvgmnUdusaDNZCBHFBuj0hsBzzwpSCAtJYa/L0ihmaKDl5m+UY8uRQuKmnmOPPUuudpxZlgSHh9HefSuL+Y3WO3gYvXLuDGuigphZnv3cnUNPVJiTrw/tuw+OPLeKdyCxbX6UPyPDR2olli+vNxOG9SQj/yNZwbxSHmA+e2ICp40AxMwrfSlD/wWVwF37Izw9vM9Zd8EcyW7uKAI2wraBf+9oDN4QB1KLqhckqAWPtu3bxWQPD4r+Lbj+AO7RbG7HW8Hh1za7rklC6Ofx0xMbXTE1WvMHQPWup9DnFRrUovaTBcZhyG21TMPk4vqvQMzk67fCwS1uR+b3e+S3FuXHVSA0zN8x5VawEjiW+BzpB+SKhwRiLh+XWM2rmzPZlAAzmtOBllZjmzz2aMb3D78vUAv36CM5pk0HoH5Tm7uiJIIudKgmKeS+LsgfMgLvRu/UQTXf5EZ0r2TVVxESEKQG1rnP3RmGuTK3ZeXeC9jnW8eiyZCGNHR+DhWeXPFSI4lDFCgJsqftE2+CUs9p9s58MeGhfJhXVwY6YqzFEYAd+msjeNpK30Hn73b91RxwZmS3AH1jDUNQ2PtfQIRFl/nfYsnQe3bzGyRvlp4=

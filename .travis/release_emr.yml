@@ -5,14 +5,14 @@ local:
 # Required: deployment targets
 targets:
   - type     : "bintray"
-    user     : <%= ENV['BINTRAY_SNOWPLOW_GENERIC_USER'] %>
-    password : <%= ENV['BINTRAY_SNOWPLOW_GENERIC_API_KEY'] %>
+    user     : <%= ENV['BINTRAY_USER'] %>
+    password : <%= ENV['BINTRAY_GENERIC_API_KEY'] %>
 
 # Required: packages to be deployed
 packages:
-  - repo     : "snowplow-generic"
-    name     : "snowplow"
-    user_org : "snowplow"
+  - repo     : "chuwy-generic"
+    name     : "chuwy"
+    user_org : "chuwy"
     publish  : true
     override : false
     continue_on_conflict : false
