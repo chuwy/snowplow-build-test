@@ -20,5 +20,6 @@ rvm use --default jruby-9.1.6.0
 gem install bundler
 bundle install
 echo 'Running RSpec'
+rvm list
 rspec
 rake
